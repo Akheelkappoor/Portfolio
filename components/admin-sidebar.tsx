@@ -74,8 +74,6 @@ export function AdminSidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen
         </svg>
       ),
       active: pathname === "/admin/settings",
-      disabled: true,
-      badge: "Soon",
     },
   ]
 
@@ -160,7 +158,7 @@ export function AdminSidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen
 
       {/* Bottom Actions */}
       <div className="p-4 border-t-2 border-slate-200 space-y-4">
-        <Link href="/">
+        <a href="/" target="_blank" rel="noopener noreferrer">
           <Button
             variant="outline"
             className="w-full justify-start border-2 border-slate-200 hover:border-amber-500 hover:bg-amber-50 hover:text-amber-700 transition-all"
@@ -170,7 +168,7 @@ export function AdminSidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen
             </svg>
             View Site
           </Button>
-        </Link>
+        </a>
         <Button
           onClick={logout}
           className="w-full justify-start bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold"

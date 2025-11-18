@@ -11,7 +11,35 @@ export async function GET() {
       return NextResponse.json({ error: "Hero section not found" }, { status: 404 })
     }
 
-    return NextResponse.json(result.rows[0])
+    const row = result.rows[0]
+
+    // Transform database schema to component format
+    const transformed = {
+      badge: row.badge_text,
+      name: row.name,
+      tagline: row.tagline,
+      description: row.description,
+      profile_image_url: row.profile_image_url,
+      resume_url: row.resume_url,
+      location: row.availability_location,
+      availability_status: row.availability_status,
+      availability_text: row.availability_status === 'available' ? 'Available Immediately' :
+                        row.availability_status === 'busy' ? 'Currently Unavailable' :
+                        'Open to Opportunities',
+      stats: [
+        { value: row.stat_1_value, label: row.stat_1_label },
+        { value: row.stat_2_value, label: row.stat_2_label },
+        { value: row.stat_3_value, label: row.stat_3_label },
+        { value: row.stat_4_value, label: row.stat_4_label },
+      ].filter(s => s.value && s.label),
+      ctas: [
+        { label: row.cta_primary_text, url: row.cta_primary_link, variant: 'default' },
+        { label: row.cta_secondary_text, url: row.cta_secondary_link, variant: 'outline' },
+        { label: 'Download Resume ↓', url: row.resume_url, variant: 'ghost' },
+      ].filter(c => c.label && c.url),
+    }
+
+    return NextResponse.json(transformed)
   } catch (err: any) {
     console.error("Failed to fetch hero section:", err)
     return NextResponse.json({ error: err?.message || "Failed to fetch hero section" }, { status: 500 })

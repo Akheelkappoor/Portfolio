@@ -1,21 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(test:*)",
-      "Bash(npm install)",
-      "Bash(npm install:*)",
-      "Bash(npm run dev:*)",
-      "Bash(curl:*)",
-      "Bash(node -e:*)",
-      "Bash(nc:*)",
-      "Bash(nslookup:*)",
-      "Bash(timeout 15 bash -c 'cat < /dev/null > /dev/tcp/myporject.ct0cwgyai5d2.me-central-1.rds.amazonaws.com/5432')",
-      "Bash(chmod:*)",
-      "Bash(ssh:*)",
-      "Bash(lsof:*)",
-      "Bash(PGPASSWORD='Mydatabase123' psql:*)",
       "Bash(PGPASSWORD='XrebTfymkYVSh2zniGKy' psql:*)",
-      "Bash(pkill -f \"ssh.*5432:myporject\")"
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "Bash(PGPASSWORD=XrebTfymkYVSh2zniGKy psql:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,272 @@
+{
+  "name": "Portfolio AI Chatbot Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat-assistant",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook - Chat Message",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "73fa7cb6-452a-4e07-86eb-253f0ff1c1f8"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Extract user message and session info\nconst userMessage = $input.item.json.body.message || \"\";\nconst sessionId = $input.item.json.body.sessionId || \"unknown\";\nconst timestamp = $input.item.json.body.timestamp || new Date().toISOString();\n\n// Return formatted data for next nodes\nreturn {\n  json: {\n    userMessage: userMessage,\n    sessionId: sessionId,\n    timestamp: timestamp,\n    conversationContext: \"portfolio_assistant\"\n  }\n};"
+      },
+      "id": "extract-message",
+      "name": "Extract Message Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [470, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Get all portfolio data for context\nSELECT \n  'profile' as data_type,\n  json_build_object(\n    'name', name,\n    'title', title,\n    'bio', bio,\n    'email', email,\n    'phone', phone,\n    'location', location,\n    'linkedin', linkedin_url,\n    'github', github_url\n  ) as data\nFROM profile\nWHERE id = (SELECT id FROM profile ORDER BY id LIMIT 1)\n\nUNION ALL\n\nSELECT \n  'hero' as data_type,\n  json_build_object(\n    'name', name,\n    'tagline', tagline,\n    'description', description,\n    'availability_status', availability_status,\n    'availability_location', availability_location\n  ) as data\nFROM hero_section\nWHERE id = (SELECT id FROM hero_section ORDER BY id LIMIT 1)\n\nUNION ALL\n\nSELECT \n  'experience' as data_type,\n  json_agg(\n    json_build_object(\n      'company', company_name,\n      'position', position,\n      'duration', duration,\n      'description', description,\n      'location', location\n    )\n  ) as data\nFROM work_experience\n\nUNION ALL\n\nSELECT \n  'skills' as data_type,\n  json_agg(\n    json_build_object(\n      'category', sc.category_name,\n      'items', (\n        SELECT json_agg(si.skill_name)\n        FROM skills_items si\n        WHERE si.category_id = sc.id\n      )\n    )\n  ) as data\nFROM skills_categories sc\n\nUNION ALL\n\nSELECT \n  'projects' as data_type,\n  json_agg(\n    json_build_object(\n      'title', title,\n      'description', description,\n      'technologies', technologies,\n      'url', project_url,\n      'github', github_url\n    )\n  ) as data\nFROM projects;",
+        "options": {}
+      },
+      "id": "query-database",
+      "name": "Query Portfolio Database",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [690, 300],
+      "credentials": {
+        "postgres": {
+          "id": "your-postgres-credential-id",
+          "name": "Portfolio Database"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Build comprehensive context from database results\nconst dbResults = $input.all();\nconst contextData = {};\n\nfor (const item of dbResults) {\n  const dataType = item.json.data_type;\n  const data = item.json.data;\n  contextData[dataType] = data;\n}\n\n// Format context for AI\nconst profile = contextData.profile || {};\nconst hero = contextData.hero || {};\nconst experience = contextData.experience || [];\nconst skills = contextData.skills || [];\nconst projects = contextData.projects || [];\n\nconst contextText = `\nPORTFOLIO OWNER INFORMATION:\nName: ${profile.name || 'Akheel Kappoor'}\nTitle: ${profile.title || hero.tagline || 'Business Analyst'}\nBio: ${profile.bio || hero.description || ''}\nLocation: ${profile.location || hero.availability_location || 'Dubai, UAE'}\nEmail: ${profile.email || ''}\nPhone: ${profile.phone || ''}\nLinkedIn: ${profile.linkedin || ''}\nGitHub: ${profile.github || ''}\nAvailability: ${hero.availability_status || 'Available'}\n\nWORK EXPERIENCE:\n${experience.map((exp, i) => `\n${i + 1}. ${exp.position} at ${exp.company}\n   Duration: ${exp.duration}\n   Location: ${exp.location}\n   Description: ${exp.description}`).join('\\n')}\n\nSKILLS:\n${skills.map(cat => `\n- ${cat.category}: ${(cat.items || []).join(', ')}`).join('\\n')}\n\nPROJECTS:\n${projects.map((proj, i) => `\n${i + 1}. ${proj.title}\n   Description: ${proj.description}\n   Technologies: ${proj.technologies || 'N/A'}\n   URL: ${proj.url || 'N/A'}\n   GitHub: ${proj.github || 'N/A'}`).join('\\n')}\n`;\n\nreturn {\n  json: {\n    userMessage: $('Extract Message Data').item.json.userMessage,\n    sessionId: $('Extract Message Data').item.json.sessionId,\n    timestamp: $('Extract Message Data').item.json.timestamp,\n    portfolioContext: contextText,\n    profileData: profile,\n    heroData: hero,\n    experienceData: experience,\n    skillsData: skills,\n    projectsData: projects\n  }\n};"
+      },
+      "id": "build-context",
+      "name": "Build AI Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [910, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 500
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=You are Akheel Kappoor's AI assistant on his portfolio website. Your role is to answer questions about his professional background, skills, experience, and projects in a friendly, professional, and concise manner.\n\nKEY INSTRUCTIONS:\n1. Always respond in first person as if you are representing Akheel (use \"I\" and \"my\")\n2. Be friendly, professional, and helpful\n3. Keep responses concise (2-4 sentences max unless detailed info requested)\n4. If asked about availability, mention his current status\n5. Provide specific details from his portfolio when relevant\n6. If you don't have information, suggest contacting him directly via email\n7. Use emojis sparingly for a friendly tone (1-2 max per response)\n8. End with a helpful follow-up question or call-to-action when appropriate\n\nPORTFOLIO DATA:\n{{ $json.portfolioContext }}\n\nRespond naturally and conversationally while staying true to the portfolio information."
+            },
+            {
+              "role": "user",
+              "content": "={{ $json.userMessage }}"
+            }
+          ]
+        }
+      },
+      "id": "openai-chat",
+      "name": "OpenAI ChatGPT",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [1130, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "your-openai-credential-id",
+          "name": "OpenAI Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Format AI response for chatbot\nconst aiResponse = $input.item.json.message?.content || $input.item.json.response || \"I'm having trouble processing that right now. Please try asking again or contact me directly!\";\n\n// Log conversation to database (optional)\nconst userMessage = $('Extract Message Data').item.json.userMessage;\nconst sessionId = $('Extract Message Data').item.json.sessionId;\nconst timestamp = $('Extract Message Data').item.json.timestamp;\n\nreturn {\n  json: {\n    response: aiResponse,\n    sessionId: sessionId,\n    timestamp: new Date().toISOString(),\n    metadata: {\n      userMessage: userMessage,\n      receivedAt: timestamp,\n      respondedAt: new Date().toISOString()\n    }\n  }\n};"
+      },
+      "id": "format-response",
+      "name": "Format Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1350, 300]
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "chat_conversations",
+          "mode": "list",
+          "cachedResultName": "chat_conversations"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $json.sessionId }}",
+            "user_message": "={{ $json.metadata.userMessage }}",
+            "bot_response": "={{ $json.response }}",
+            "created_at": "={{ $json.timestamp }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "log-conversation",
+      "name": "Log Conversation (Optional)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [1350, 480],
+      "credentials": {
+        "postgres": {
+          "id": "your-postgres-credential-id",
+          "name": "Portfolio Database"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ]
+          }
+        }
+      },
+      "id": "webhook-response",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1570, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Error handling - return friendly error message\nconst error = $input.item.json.error || \"Unknown error\";\n\nreturn {\n  json: {\n    response: \"I apologize, but I'm experiencing technical difficulties right now. 😅 Please try again in a moment or feel free to reach out directly via the contact form!\",\n    error: error,\n    timestamp: new Date().toISOString()\n  }\n};"
+      },
+      "id": "error-handler",
+      "name": "Error Handler",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1130, 480]
+    }
+  ],
+  "connections": {
+    "Webhook - Chat Message": {
+      "main": [
+        [
+          {
+            "node": "Extract Message Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Message Data": {
+      "main": [
+        [
+          {
+            "node": "Query Portfolio Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Portfolio Database": {
+      "main": [
+        [
+          {
+            "node": "Build AI Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build AI Context": {
+      "main": [
+        [
+          {
+            "node": "OpenAI ChatGPT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI ChatGPT": {
+      "main": [
+        [
+          {
+            "node": "Format Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Response": {
+      "main": [
+        [
+          {
+            "node": "Log Conversation (Optional)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Conversation (Optional)": {
+      "main": [
+        []
+      ]
+    },
+    "Error Handler": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-18T12:00:00.000Z",
+  "versionId": "1"
+}
