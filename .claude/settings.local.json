@@ -4,7 +4,10 @@
       "Bash(PGPASSWORD='XrebTfymkYVSh2zniGKy' psql:*)",
       "Bash(find:*)",
       "Bash(python3:*)",
-      "Bash(PGPASSWORD=XrebTfymkYVSh2zniGKy psql:*)"
+      "Bash(PGPASSWORD=XrebTfymkYVSh2zniGKy psql:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
