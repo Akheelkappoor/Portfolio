@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/.pnp
+.pnp.js
 
 # next.js
 /.next/
@@ -9,15 +11,24 @@
 
 # production
 /build
+/dist
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+lerna-debug.log*
 
-# env files
-.env*
+# env files (DO NOT COMMIT)
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Keep .env.example for reference
+!.env.example
 
 # vercel
 .vercel
@@ -25,3 +36,33 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDEs
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# SSH Keys (NEVER COMMIT)
+*.pem
+*.key
+id_rsa*
+*.ppk
+
+# Database dumps
+*.sql
+*.dump
+
+# PM2
+.pm2/
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Logs
+logs/
+*.log

@@ -9,6 +9,9 @@ export function SkillsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const { data: skills, error } = useSWR("/api/homepage/skills", fetcher)
 
+  // Ensure skills is an array
+  const skillsList = Array.isArray(skills) ? skills : []
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -25,7 +28,7 @@ export function SkillsSection() {
     elements?.forEach((el) => observer.observe(el))
 
     return () => observer.disconnect()
-  }, [skills])
+  }, [skillsList])
 
   // Loading state
   if (!skills) {
@@ -52,7 +55,7 @@ export function SkillsSection() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {skills.map((skill: any, index: number) => (
+          {skillsList.map((skill: any, index: number) => (
             <div
               key={skill.title}
               className="skill-card opacity-0 group"

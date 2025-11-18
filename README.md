@@ -1,123 +1,120 @@
-# Portfolio – Run Locally and Deploy to AWS
+# 💼 Akheel Kappoor - Business Analyst Portfolio
 
-Overview
-- Tech: Next.js (App Router), TypeScript, Tailwind (via shadcn styles), API Routes.
-- Features: Public portfolio pages, Contact form (Resend), Admin-only pages (protected by ADMIN_PASSWORD), Projects management, Resume download.
-- Design: Matte white background with black text, subtle accent colors, accessible typography.
+A modern, full-stack portfolio website with admin dashboard, dynamic theming, and AI-powered chatbot.
 
-Local Development
-1) Requirements
-- Node.js 18+ (LTS recommended)
-- npm or pnpm
-- A Resend API key (for the contact form) — optional during development
+![Next.js](https://img.shields.io/badge/Next.js-15.2.4-black)
+![React](https://img.shields.io/badge/React-19-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-RDS-blue)
+![AWS](https://img.shields.io/badge/AWS-EC2%20|%20RDS%20|%20S3-orange)
 
-2) Setup
-- Copy .env.example to .env.local and fill in values:
-  - RESEND_API_KEY=your_resend_api_key
-  - CONTACT_TO_EMAIL=you@example.com
-  - ADMIN_PASSWORD=set-a-strong-password
-- Install and run:
-  - npm install
-  - npm run dev
-- Open http://localhost:3000
+---
 
-3) Admin Access (for adding/editing projects)
-- Visit /admin/login
-- Use the password from ADMIN_PASSWORD
-- Manage projects at /admin/projects
-- Note: Routes are protected using an HttpOnly session cookie after successful login.
+## ✨ Features
 
-4) Resume Download
-- Place your resume at public/resume.pdf
-- The “Download Resume” button links to /resume.pdf
+### 🎯 Public Portfolio
+- **Modern Homepage** - Hero section, experience timeline, skills showcase
+- **Projects Gallery** - Interactive project cards with live demos
+- **Contact Form** - Email integration with Gmail SMTP
+- **AI Chatbot** 🤖 - GPT-4 powered assistant connected to your data
+- **Responsive Design** - Mobile-first, works on all devices
+- **Dynamic Theming** - Customizable colors from admin panel
 
-Sending Email (Contact Page)
-- This project uses Resend to send emails from /contact.
-- Set:
-  - RESEND_API_KEY=... (from Resend)
-  - CONTACT_TO_EMAIL=your target inbox (e.g., yourname@gmail.com)
-- In development, if the key is missing, the form may show an informative error.
+### 🔐 Admin Dashboard
+- **Authentication** - Secure cookie-based login system
+- **Homepage Editor** - WYSIWYG editing for hero section
+- **Profile Management** - Update personal information
+- **Projects CRUD** - Full create, read, update, delete operations
+- **Messages Inbox** - View and manage contact form submissions
+- **Settings Panel** - Control site appearance, SEO, and more
+- **Database Export** - Backup all data as JSON
 
-Environment Variables
-- RESEND_API_KEY: Resend API key used by the contact API route
-- CONTACT_TO_EMAIL: The recipient email address for contact form submissions
-- ADMIN_PASSWORD: Password to access /admin (keep this secret)
+### 🤖 AI Chatbot Features
+- N8N workflow integration
+- OpenAI GPT-4 powered responses
+- Real-time conversation
+- Database-connected (answers from your actual data)
+- Typing indicators & smooth animations
+- Session management
+- Conversation history logging
 
-AWS Deployment Options
+---
 
-Option A – AWS Amplify Hosting (Recommended for simplicity)
-- Connect your GitHub repo in Amplify.
-- Framework: Next.js
-- Build settings: Amplify auto-detects Next.js SSR. Default is typically:
-  - Build Command: npm ci && npm run build
-  - Start Command: npm start
-- Set environment variables in Amplify:
-  - RESEND_API_KEY
-  - CONTACT_TO_EMAIL
-  - ADMIN_PASSWORD
-- Verify:
-  - Contact page can send email (Resend key valid)
-  - /admin/login works and only accepts your ADMIN_PASSWORD
-- Custom domain (optional): Add in Amplify’s domain settings.
+## 🚀 Quick Start
 
-Option B – Elastic Beanstalk or ECS (Docker)
-1) Ensure scripts in package.json:
-- "build": "next build"
-- "start": "next start -p $PORT"
-- EB/ECS set PORT automatically; Next will listen on it.
+### Prerequisites
+- Node.js 20.x or higher
+- PostgreSQL database
+- AWS Account (for S3 storage)
+- Gmail account (for contact form)
 
-2) Dockerfile (for ECS or EB using Docker)
-- Example:
-  \`\`\`
-  FROM node:18-alpine
-  WORKDIR /app
-  COPY package*.json ./
-  RUN npm ci
-  COPY . .
-  RUN npm run build
-  ENV NODE_ENV=production PORT=3000
-  EXPOSE 3000
-  CMD ["npm", "start"]
-  \`\`\`
+### Local Development
 
-3) Elastic Beanstalk (without Docker)
-- Platform: Node.js 18
-- Add a Procfile:
-  \`\`\`
-  web: npm start
-  \`\`\`
-- In EB, set env vars:
-  - RESEND_API_KEY, CONTACT_TO_EMAIL, ADMIN_PASSWORD
-- Deploy zip or connect to your repository pipeline.
+1. **Clone the repository:**
+   \`\`\`bash
+   git clone https://github.com/YOUR_USERNAME/portfolio.git
+   cd portfolio
+   \`\`\`
 
-4) Notes for AWS uploads
-- If your project uses image uploads and you want AWS-native storage, consider S3:
-  - You will need to update upload logic to use AWS SDK and S3 bucket credentials.
-  - Set S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, S3_REGION, S3_BUCKET.
-  - This README does not change code; it only documents the approach.
+2. **Install dependencies:**
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-Troubleshooting
-- 404s for /resume.pdf: Ensure file exists in public/.
-- Contact form fails:
-  - Check RESEND_API_KEY and CONTACT_TO_EMAIL are set in your environment.
-- Admin page denies access:
-  - Confirm ADMIN_PASSWORD is set and matches your input.
-- Production build errors:
-  - Clear node_modules and try a clean install/build (npm ci && npm run build).
-- Hydration mismatch (dev): If you see “Hydration failed because the server rendered HTML didn’t match the client,” common causes include:
-  - Browser extensions injecting attributes (e.g., jf-ext-button-ct) into buttons/links before React hydrates
-  - Non-deterministic output in server-rendered markup (using Date.now(), Math.random(), user-locale dates) 
-  - Client-only branches rendering different DOM than the server
+3. **Setup environment variables:**
+   \`\`\`bash
+   cp .env.example .env
+   # Edit .env with your credentials
+   \`\`\`
 
-Fixes:
-- Temporarily disable browser extensions or try a private window
-- Ensure server and client render identical markup: move non-deterministic code to useEffect or gate with a mounted state
-- Avoid Date.now()/Math.random() directly in SSR-rendered elements
-- If a third-party extension adds attributes, strip them out or ensure they don’t modify SSR HTML
+4. **Run development server:**
+   \`\`\`bash
+   npm run dev
+   \`\`\`
 
-Security
-- Never commit .env.local to source control.
-- Use a strong ADMIN_PASSWORD and rotate it regularly.
-- Limit who has access to your AWS environment variables and hosting.
+5. **Visit:** \`http://localhost:3000\`
 
-Happy shipping!
+---
+
+## 📦 Production Deployment
+
+**Complete guide:** See [DEPLOYMENT-GUIDE.md](./DEPLOYMENT-GUIDE.md)
+
+**Public IP:** \`3.28.158.167\`
+
+---
+
+## 🔧 Tech Stack
+
+- **Framework:** Next.js 15.2.4
+- **UI:** React 19 + TypeScript + Tailwind CSS
+- **Database:** PostgreSQL (AWS RDS)
+- **Storage:** AWS S3
+- **Hosting:** AWS EC2
+- **AI:** OpenAI GPT-4 + N8N
+- **Email:** Gmail SMTP
+
+---
+
+## 📚 Documentation
+
+- **[DEPLOYMENT-GUIDE.md](./DEPLOYMENT-GUIDE.md)** - Complete EC2 setup
+- **[CHANGELOG.md](./CHANGELOG.md)** - Version history
+- **[N8N-CHATBOT-SETUP-GUIDE.md](./N8N-CHATBOT-SETUP-GUIDE.md)** - Chatbot configuration
+- **[PRE-DEPLOYMENT-CHECKLIST.md](./PRE-DEPLOYMENT-CHECKLIST.md)** - Pre-deploy checks
+
+---
+
+## 📞 Contact
+
+**Akheel Kappoor**
+- **Email:** kappoorakheel@gmail.com
+- **Location:** Dubai, UAE
+
+**Live Site:** \`http://3.28.158.167\`
+
+---
+
+**Made with ❤️ by Akheel Kappoor**
+
+**Status:** ✅ Production Ready | **Version:** 1.0.0 | **Updated:** 2025-11-18

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import useSWR from "swr"
 import { Settings, User, Globe, Palette, Search, Database } from "lucide-react"
 
@@ -30,24 +30,26 @@ export default function AdminSettingsClient() {
   })
 
   // Update form when data loads
-  if (settings && formData.admin_email === "") {
-    setFormData({
-      admin_email: settings.admin_email || "",
-      email_notifications: settings.email_notifications ?? true,
-      session_timeout: settings.session_timeout || 3600,
-      site_title: settings.site_title || "",
-      site_description: settings.site_description || "",
-      google_analytics_id: settings.google_analytics_id || "",
-      contact_form_email: settings.contact_form_email || "",
-      primary_color: settings.primary_color || "#f59e0b",
-      secondary_color: settings.secondary_color || "#ea580c",
-      logo_url: settings.logo_url || "",
-      favicon_url: settings.favicon_url || "",
-      default_og_image: settings.default_og_image || "",
-      twitter_handle: settings.twitter_handle || "",
-      meta_keywords: settings.meta_keywords || "",
-    })
-  }
+  useEffect(() => {
+    if (settings) {
+      setFormData({
+        admin_email: settings.admin_email || "",
+        email_notifications: settings.email_notifications ?? true,
+        session_timeout: settings.session_timeout || 3600,
+        site_title: settings.site_title || "",
+        site_description: settings.site_description || "",
+        google_analytics_id: settings.google_analytics_id || "",
+        contact_form_email: settings.contact_form_email || "",
+        primary_color: settings.primary_color || "#f59e0b",
+        secondary_color: settings.secondary_color || "#ea580c",
+        logo_url: settings.logo_url || "",
+        favicon_url: settings.favicon_url || "",
+        default_og_image: settings.default_og_image || "",
+        twitter_handle: settings.twitter_handle || "",
+        meta_keywords: settings.meta_keywords || "",
+      })
+    }
+  }, [settings])
 
   const handleSave = async () => {
     setSaving(true)

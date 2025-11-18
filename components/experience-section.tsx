@@ -39,6 +39,9 @@ export function ExperienceSection() {
     )
   }
 
+  // Ensure experiences is an array
+  const experiencesList = Array.isArray(experiences) ? experiences : []
+
   return (
     <section id="experience" ref={sectionRef} className="w-full bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
@@ -56,7 +59,7 @@ export function ExperienceSection() {
           <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-amber-400 via-amber-500 to-orange-500"></div>
 
           <div className="space-y-12">
-            {experiences.map((exp: any, index: number) => (
+            {experiencesList.map((exp: any, index: number) => (
               <div
                 key={index}
                 className={`relative slide-element opacity-0 ${
