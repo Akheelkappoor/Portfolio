@@ -50,7 +50,10 @@ export async function POST(req: Request) {
       imageUrl: string | null = null
 
     if (ct.includes("multipart/form-data")) {
-      const form = await req.formData()
+      const form = await req.formData().catch((err) => {
+        console.error("[v0] FormData parse error:", err.message)
+        throw new Error("Failed to parse body as FormData.")
+      })
       title = String(form.get("title") || "")
       meta = String(form.get("meta") || "")
       badge = String(form.get("badge") || "")

@@ -43,22 +43,22 @@ export function ExperienceSection() {
   const experiencesList = Array.isArray(experiences) ? experiences : []
 
   return (
-    <section id="experience" ref={sectionRef} className="w-full bg-white py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
+    <section id="experience" ref={sectionRef} className="w-full bg-white py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-3 sm:mb-4">
             Work Experience
           </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto px-4">
             Delivering measurable impact through data-driven solutions
           </p>
         </div>
 
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-amber-400 via-amber-500 to-orange-500"></div>
+          <div className="absolute left-6 sm:left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-amber-400 via-amber-500 to-orange-500"></div>
 
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             {experiencesList.map((exp: any, index: number) => (
               <div
                 key={index}
@@ -67,26 +67,26 @@ export function ExperienceSection() {
                 }`}
               >
                 {/* Timeline dot */}
-                <div className="absolute left-6 md:left-1/2 w-5 h-5 rounded-full bg-amber-500 border-4 border-white shadow-lg transform -translate-x-1/2"></div>
+                <div className="absolute left-4 sm:left-6 md:left-1/2 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-500 border-2 sm:border-4 border-white shadow-lg transform -translate-x-1/2"></div>
 
-                <div className="ml-20 md:ml-0 md:w-11/12">
-                  <div className="group bg-gradient-to-br from-white to-amber-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-slate-200">
-                    <div className="mb-4">
-                      <h3 className="text-2xl font-bold text-slate-900 mb-2">{exp.title}</h3>
+                <div className="ml-12 sm:ml-16 md:ml-0 md:w-11/12">
+                  <div className="group bg-gradient-to-br from-white to-amber-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-slate-200">
+                    <div className="mb-3 sm:mb-4">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-900 mb-2">{exp.title}</h3>
                       <div className="space-y-1">
-                        <div className="flex items-center gap-3 text-slate-600">
-                          <span className="font-semibold">{exp.company}</span>
-                          <span className="text-amber-600">•</span>
-                          <span className="text-sm">{exp.location}</span>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-slate-600">
+                          <span className="font-semibold text-sm sm:text-base">{exp.company}</span>
+                          <span className="text-amber-600 hidden sm:inline">•</span>
+                          <span className="text-xs sm:text-sm">{exp.location}</span>
                         </div>
-                        <div className="text-sm text-slate-500">{exp.period}</div>
+                        <div className="text-xs sm:text-sm text-slate-500">{exp.period}</div>
                       </div>
                     </div>
 
-                    <ul className="space-y-3">
+                    <ul className="space-y-2 sm:space-y-3">
                       {exp.achievements?.map((achievement: string, i: number) => (
-                        <li key={i} className="flex items-start gap-3 text-slate-700">
-                          <span className="text-amber-500 mt-1">✓</span>
+                        <li key={i} className="flex items-start gap-2 sm:gap-3 text-slate-700 text-sm sm:text-base">
+                          <span className="text-amber-500 mt-0.5 sm:mt-1 flex-shrink-0">✓</span>
                           <span className="text-left">{achievement}</span>
                         </li>
                       ))}

@@ -2,21 +2,21 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="w-full bg-slate-900 text-white py-12 border-t border-slate-800">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid gap-12 md:grid-cols-4 mb-12">
+    <footer className="w-full bg-slate-900 text-white py-8 sm:py-10 lg:py-12 border-t border-slate-800">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="grid gap-6 sm:gap-8 md:gap-12 md:grid-cols-4 mb-8 sm:mb-10 lg:mb-12">
           {/* Brand */}
           <div className="md:col-span-1">
-            <div className="font-bold text-2xl mb-4 text-amber-400">AK</div>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <div className="font-bold text-xl sm:text-2xl mb-3 sm:mb-4 text-amber-400">AK</div>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
               Business Analyst transforming data into actionable insights
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold mb-4 text-amber-400">Navigation</h3>
-            <ul className="space-y-2 text-sm">
+            <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base text-amber-400">Navigation</h3>
+            <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
               <li>
                 <a href="#about" className="text-slate-400 hover:text-white transition-colors">
                   About
@@ -42,8 +42,8 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold mb-4 text-amber-400">Contact</h3>
-            <ul className="space-y-2 text-sm">
+            <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base text-amber-400">Contact</h3>
+            <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
               <li>
                 <a
                   href="mailto:akheelkappoor@outlook.com"
@@ -67,8 +67,8 @@ export function Footer() {
 
           {/* Social */}
           <div>
-            <h3 className="font-semibold mb-4 text-amber-400">Connect</h3>
-            <div className="flex gap-4">
+            <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base text-amber-400">Connect</h3>
+            <div className="flex gap-3 sm:gap-4">
               <a
                 href="https://linkedin.com/in/akheelkappoor"
                 target="_blank"
@@ -116,9 +116,9 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-400">
-          <p>© {currentYear} Akheel Kappoor. All rights reserved.</p>
-          <p>
+        <div className="pt-6 sm:pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 text-xs sm:text-sm text-slate-400">
+          <p className="text-center md:text-left">© {currentYear} Akheel Kappoor. All rights reserved.</p>
+          <p className="text-center md:text-right">
             Built with{" "}
             <span className="text-amber-400">❤</span> using Next.js
           </p>

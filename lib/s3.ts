@@ -27,7 +27,7 @@ export async function uploadToS3(opts: {
     Body: opts.body,
     ContentType: opts.contentType || "application/octet-stream",
     CacheControl: opts.cacheControl || "public, max-age=31536000, immutable",
-    ACL: "public-read",
+    // ACL removed - bucket policy handles public access
   })
   await s3.send(cmd)
 }
