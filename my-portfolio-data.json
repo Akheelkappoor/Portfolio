@@ -1,0 +1,462 @@
+{
+  "exported_at": "2025-11-20T20:33:55.684Z",
+  "profile": {
+    "name": "Akheel Kappoor",
+    "title": "Business Analyst",
+    "bio": "Experienced Business Analyst with a proven track record in driving strategic solutions and measurable business impact.",
+    "profile_image_url": null,
+    "resume_url": null
+  },
+  "hero_section": {
+    "badge_text": "Business Analyst",
+    "name": "Akheel",
+    "tagline": "Kappoor",
+    "description": "Business Analyst with 1+ year of experience delivering 80+ projects. Expert in requirements gathering, process optimization, and translating business needs into technical solutions using SQL, Python, Excel, Power BI, and Tableau. Reduced reporting time by 87% and saved companies hundreds of hours.",
+    "profile_image_url": "/profile.jpg",
+    "resume_url": "/resume.pdf",
+    "availability_status": "available",
+    "availability_location": "Dubai, UAE",
+    "stat_1_value": "80+",
+    "stat_1_label": "Projects Delivered",
+    "stat_2_value": "87%",
+    "stat_2_label": "Time Saved",
+    "stat_3_value": "40%",
+    "stat_3_label": "Efficiency Improved",
+    "stat_4_value": "1 Year",
+    "stat_4_label": "Experience",
+    "cta_primary_text": "View My Work",
+    "cta_primary_link": "#projects",
+    "cta_secondary_text": "Get In Touch",
+    "cta_secondary_link": "#contact"
+  },
+  "contact_page_content": {
+    "heading": "Let's work together",
+    "subheading": "Have a project in mind? Let's discuss how we can work together.",
+    "email": "akheelkappoor@outlook.com",
+    "phone": "+971504978045",
+    "linkedin_url": "https://linkedin.com/in/akheelkappoor",
+    "github_url": "https://github.com/akheelkappoor",
+    "twitter_url": null,
+    "location": "Dubai, UAE",
+    "logo_text": "AK",
+    "footer_tagline": "Business Analyst transforming data into actionable insights",
+    "copyright_text": "All rights reserved.",
+    "footer_note": "Built with ❤ using Next.js",
+    "show_email": true,
+    "show_phone": true,
+    "show_linkedin": true,
+    "show_github": true,
+    "show_twitter": true,
+    "show_location": true
+  },
+  "site_settings": {
+    "site_title": "Akheel Kappoor - Business Analyst Portfolio",
+    "admin_email": "admin@example.com",
+    "primary_color": "#f59e0b",
+    "secondary_color": "#ea580c",
+    "google_analytics_id": "G-TEST123",
+    "logo_url": "",
+    "favicon_url": "",
+    "meta_keywords": "business analyst, portfolio, data analysis, SQL, Python"
+  },
+  "work_experience": [
+    {
+      "title": "Business Analyst",
+      "company": "i2Global Virtual Learning",
+      "location": "Bangalore, India",
+      "period": "Mar 2024 – Sep 2024",
+      "achievements": [
+        "Delivered 10+ business analysis projects including market research, competitor analysis, and SWOT/PESTEL frameworks as sole Business Analyst",
+        "Analyzed 200+ student records using SQL and Python to identify dropout patterns, reducing churn by 12%",
+        "Built 2 invoice management systems tracking live payments, reducing payment delays by 40%",
+        "Automated weekly reporting workflows using Slack API and Google Sheets, reducing report prep time from 4 hours to 30 minutes (87% reduction)",
+        "Automated payroll and time-tracking workflows through REST API integrations, reducing HR workload by 40%"
+      ],
+      "display_order": 0,
+      "is_visible": true
+    },
+    {
+      "title": "Business Analyst",
+      "company": "Modern Distropolis Public Limited",
+      "location": "Kerala, India (Remote)",
+      "period": "Aug 2024 – Dec 2024",
+      "achievements": [
+        "Built live dynamic finance dashboard in Excel using Power Query and VBA, reducing manual reporting time by 25%",
+        "Improved financial reconciliation speed by 40% through Excel validation formulas and automated error-checking",
+        "Developed financial forecasting models analyzing variance across 12 departments, improving budget accuracy by 10%",
+        "Collaborated with cross-functional teams to gather requirements and implement process improvements"
+      ],
+      "display_order": 2,
+      "is_visible": true
+    }
+  ],
+  "skills_categories": [
+    {
+      "title": "Business Analysis",
+      "icon": "📊",
+      "display_order": 1,
+      "is_visible": true
+    },
+    {
+      "title": "Data & Analytics",
+      "icon": "📈",
+      "display_order": 2,
+      "is_visible": true
+    },
+    {
+      "title": "Financial Analysis",
+      "icon": "💰",
+      "display_order": 3,
+      "is_visible": true
+    },
+    {
+      "title": "Automation & Tools",
+      "icon": "⚙️",
+      "display_order": 4,
+      "is_visible": true
+    }
+  ],
+  "skills_items": [
+    {
+      "skill_name": "Requirements Gathering",
+      "category_id": 1,
+      "display_order": 1
+    },
+    {
+      "skill_name": "BRDs/FRDs Documentation",
+      "category_id": 1,
+      "display_order": 2
+    },
+    {
+      "skill_name": "Process Mapping & Optimization",
+      "category_id": 1,
+      "display_order": 3
+    },
+    {
+      "skill_name": "Stakeholder Management",
+      "category_id": 1,
+      "display_order": 4
+    },
+    {
+      "skill_name": "SWOT/PESTEL Analysis",
+      "category_id": 1,
+      "display_order": 5
+    },
+    {
+      "skill_name": "Gap Analysis & User Stories",
+      "category_id": 1,
+      "display_order": 6
+    },
+    {
+      "skill_name": "JIRA & Agile/Scrum",
+      "category_id": 1,
+      "display_order": 7
+    },
+    {
+      "skill_name": "SQL (MySQL, PostgreSQL)",
+      "category_id": 2,
+      "display_order": 1
+    },
+    {
+      "skill_name": "Python (Pandas, NumPy)",
+      "category_id": 2,
+      "display_order": 2
+    },
+    {
+      "skill_name": "Excel (Power Query, VBA, Macros)",
+      "category_id": 2,
+      "display_order": 3
+    },
+    {
+      "skill_name": "Power BI (Basic)",
+      "category_id": 2,
+      "display_order": 4
+    },
+    {
+      "skill_name": "Tableau Dashboards",
+      "category_id": 2,
+      "display_order": 5
+    },
+    {
+      "skill_name": "Google Sheets (Apps Script)",
+      "category_id": 2,
+      "display_order": 6
+    },
+    {
+      "skill_name": "Financial Modeling",
+      "category_id": 3,
+      "display_order": 1
+    },
+    {
+      "skill_name": "Budgeting & Forecasting",
+      "category_id": 3,
+      "display_order": 2
+    },
+    {
+      "skill_name": "Variance Analysis",
+      "category_id": 3,
+      "display_order": 3
+    },
+    {
+      "skill_name": "Cost Optimization",
+      "category_id": 3,
+      "display_order": 4
+    },
+    {
+      "skill_name": "Reconciliation & KPI Tracking",
+      "category_id": 3,
+      "display_order": 5
+    },
+    {
+      "skill_name": "TallyACE & TallyPRO",
+      "category_id": 3,
+      "display_order": 6
+    },
+    {
+      "skill_name": "API Integration (REST APIs)",
+      "category_id": 4,
+      "display_order": 1
+    },
+    {
+      "skill_name": "N8N Workflow Automation",
+      "category_id": 4,
+      "display_order": 2
+    },
+    {
+      "skill_name": "Process Automation",
+      "category_id": 4,
+      "display_order": 3
+    },
+    {
+      "skill_name": "Google Apps Script",
+      "category_id": 4,
+      "display_order": 4
+    },
+    {
+      "skill_name": "ERP Systems",
+      "category_id": 4,
+      "display_order": 5
+    },
+    {
+      "skill_name": "Slack API Integration",
+      "category_id": 4,
+      "display_order": 6
+    }
+  ],
+  "projects": [
+    {
+      "title": "Multi-Platform Automated Reporting System",
+      "meta": "EdTech Company",
+      "badge": "Efficiency Boost",
+      "stack": [
+        "Google Sheets",
+        "APIs",
+        "Slack Bots",
+        "Python",
+        "Automation"
+      ],
+      "category": [
+        "automation",
+        "reporting",
+        "integration",
+        "dashboard"
+      ],
+      "challenge": [
+        "Manual report creation taking 4 hours weekly",
+        "Reports scattered across different platforms",
+        "No automated stakeholder updates",
+        "Delayed visibility into key metrics",
+        "Repetitive manual data compilation"
+      ],
+      "solution": [
+        "Created automated dashboards using Google Sheets and APIs",
+        "Built Slack bots for automatic report distribution",
+        "Integrated multiple data sources into single system",
+        "Implemented scheduled report generation",
+        "Designed self-updating KPI tracking"
+      ],
+      "impact": [
+        "Reduced reporting time by 87% (from 4 hours to 30 minutes weekly)",
+        "Saved 3.5 hours per week in manual work",
+        "Improved stakeholder communication speed",
+        "Enabled real-time access to key metrics",
+        "Standardized reporting across all departments"
+      ],
+      "github_url": "",
+      "live_url": "",
+      "display_order": 1
+    },
+    {
+      "title": "Custom Learning Management System with AI",
+      "meta": "EdTech Company",
+      "badge": "High Impact • Revenue Generator",
+      "stack": [
+        "Python",
+        "HTML",
+        "AI",
+        "SQL",
+        "APIs",
+        "Automation"
+      ],
+      "category": [
+        "web development",
+        "automation",
+        "AI",
+        "process improvement"
+      ],
+      "challenge": [
+        "No centralized system for course delivery",
+        "Manual payroll and time tracking consuming HR resources",
+        "Scattered student data across multiple platforms",
+        "Need for scalable learning platform",
+        "Revenue opportunity through automation"
+      ],
+      "solution": [
+        "Built custom LMS using Python, HTML and AI",
+        "Integrated automated payroll system",
+        "Created time tracking automation for employees",
+        "Developed student management and course delivery system",
+        "Implemented API connections for seamless data flow"
+      ],
+      "impact": [
+        "Generated ₹1M+ in additional revenue",
+        "Reduced HR workload by 40%",
+        "Eliminated 10+ hours of manual data entry weekly",
+        "Centralized all learning operations in one platform",
+        "Enabled scalable course delivery for growing student base"
+      ],
+      "github_url": "",
+      "live_url": "",
+      "display_order": 2
+    },
+    {
+      "title": "Real-Time Finance Dashboard",
+      "meta": "Distribution Company ",
+      "badge": "Best Performer Q4 2024",
+      "stack": [
+        "Excel",
+        "Power Query",
+        "Pivot Tables",
+        "Tableau",
+        "Financial Software Integration"
+      ],
+      "category": [
+        "dashboard",
+        "finance",
+        "automation",
+        "reporting"
+      ],
+      "challenge": [
+        "Finance team spending 6+ hours weekly on manual reports",
+        "Data pulled from multiple sources manually",
+        "High risk of manual errors in reconciliation",
+        "No real-time visibility for decision-making",
+        "Delayed financial insights impacting business decisions"
+      ],
+      "solution": [
+        "Built live dynamic dashboard in Excel",
+        "Automated data export from finance software using Power Query",
+        "Created self-updating charts and KPIs",
+        "Implemented error-checking formulas and validation rules",
+        "Designed automated reconciliation checks",
+        "Added conditional formatting for financial alerts"
+      ],
+      "impact": [
+        "Reduced reporting time by 25% (saved 1.5 hours weekly)",
+        "Improved reconciliation speed by 40%",
+        "Achieved 99%+ data accuracy",
+        "Earned Best Performer Q4 2024 recognition",
+        "Enabled real-time financial decision-making",
+        "Reduced manual errors from 15/month to 3/month"
+      ],
+      "github_url": "",
+      "live_url": "",
+      "display_order": 3
+    },
+    {
+      "title": "Student Dropout & Market Analysis",
+      "meta": "EdTech Company ",
+      "badge": "Strategic Analysis",
+      "stack": [
+        "Excel",
+        "SQL",
+        "SWOT Analysis",
+        "PESTEL Analysis",
+        "Data Visualization"
+      ],
+      "category": [
+        "data analysis",
+        "strategic planning",
+        "market research",
+        "business intelligence"
+      ],
+      "challenge": [
+        "High student dropout rates across 10+ courses",
+        "Unclear understanding of enrollment patterns",
+        "Need for competitive positioning in market",
+        "Limited data on course performance and demand",
+        "Lack of strategic direction for curriculum development"
+      ],
+      "solution": [
+        "Analyzed 200+ student and teacher records to identify patterns",
+        "Conducted dropout pattern identification across all courses",
+        "Performed competitor benchmarking of 5 competitors",
+        "Created SWOT analysis for strategic positioning",
+        "Executed PESTEL analysis for market factors",
+        "Built course performance dashboard with trend analysis"
+      ],
+      "impact": [
+        "Identified 3 key dropout triggers",
+        "Course modifications adopted by leadership",
+        "Insights directly informed marketing strategy",
+        "Helped prioritize high-demand courses",
+        "Improved student retention planning",
+        "Provided data-driven curriculum recommendations"
+      ],
+      "github_url": "",
+      "live_url": "",
+      "display_order": 4
+    },
+    {
+      "title": "Automated Invoice Management System",
+      "meta": "EdTech Company ",
+      "badge": "Solo Project",
+      "stack": [
+        "Google Sheets",
+        "Apps Script",
+        "Excel",
+        "Automation",
+        "Data Validation"
+      ],
+      "category": [
+        "automation",
+        "finance",
+        "dashboard",
+        "process improvement"
+      ],
+      "challenge": [
+        "Payment delays of 15-30 days impacting cash flow",
+        "Manual Excel tracking consuming 5+ hours weekly",
+        "Zero visibility into pending vs paid invoices",
+        "No automated alerts for overdue payments"
+      ],
+      "solution": [
+        "Built dual invoice tracking system from scratch using Google Sheets",
+        "Implemented live status updates (Paid/Pending/Overdue)",
+        "Created automated email notifications using Apps Script",
+        "Designed payment analytics dashboard with conditional formatting",
+        "Added timestamp logging for audit trail"
+      ],
+      "impact": [
+        "Reduced payment delays by 40%",
+        "Saved 5+ hours per week in manual tracking",
+        "Eliminated 100% of invoice tracking errors",
+        "Improved cash flow visibility for leadership",
+        "Established scalable system still in use company-wide"
+      ],
+      "github_url": "",
+      "live_url": "",
+      "display_order": 5
+    }
+  ]
+}

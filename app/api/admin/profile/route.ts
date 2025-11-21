@@ -37,13 +37,7 @@ export async function PUT(request: Request) {
     const {
       name,
       title,
-      email,
-      phone,
-      location,
       bio,
-      linkedin_url,
-      github_url,
-      twitter_url,
       profile_image_url,
       resume_url,
     } = data
@@ -52,18 +46,12 @@ export async function PUT(request: Request) {
       `UPDATE profile SET
         name = $1,
         title = $2,
-        email = $3,
-        phone = $4,
-        location = $5,
-        bio = $6,
-        linkedin_url = $7,
-        github_url = $8,
-        twitter_url = $9,
-        profile_image_url = $10,
-        resume_url = $11,
+        bio = $3,
+        profile_image_url = $4,
+        resume_url = $5,
         updated_at = NOW()
       WHERE id = (SELECT id FROM profile ORDER BY id LIMIT 1)`,
-      [name, title, email, phone, location, bio, linkedin_url, github_url, twitter_url, profile_image_url, resume_url]
+      [name, title, bio, profile_image_url, resume_url]
     )
 
     return NextResponse.json({ ok: true })

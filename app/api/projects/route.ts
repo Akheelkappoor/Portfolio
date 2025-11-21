@@ -28,9 +28,12 @@ export async function GET() {
         COALESCE(challenge, '[]') AS challenge,
         COALESCE(solution, '[]')  AS solution,
         COALESCE(impact, '[]')    AS impact,
-        image_url AS "imageUrl"
+        image_url AS "imageUrl",
+        pdf_url AS "pdfUrl",
+        github_url AS "githubUrl",
+        live_url AS "liveUrl"
       FROM projects
-      ORDER BY created_at DESC
+      ORDER BY display_order ASC, created_at DESC
     `)
     // Ensure arrays are arrays (jsonb in PG comes as objects already parsed)
     const projects = rows.map((r: any) => ({

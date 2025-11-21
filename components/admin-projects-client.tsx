@@ -17,6 +17,10 @@ type Project = {
   solution?: string[]
   impact?: string[]
   imageUrl?: string | null
+  pdfUrl?: string | null
+  githubUrl?: string | null
+  liveUrl?: string | null
+  displayOrder?: number
 }
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
@@ -29,6 +33,9 @@ export default function AdminProjectsClient() {
   const [editingProject, setEditingProject] = useState<Project | null>(null)
   const PROJECTS_PER_PAGE = 6
 
+  // Get all projects for order validation
+  const projects = Array.isArray(data) ? data : []
+
   async function onCreate(data: {
     title: string
     meta: string
@@ -39,6 +46,11 @@ export default function AdminProjectsClient() {
     solution: string[]
     impact: string[]
     image?: File
+    pdf?: File
+    removePdf?: boolean
+    githubUrl?: string
+    liveUrl?: string
+    displayOrder?: number
   }) {
     setCreating(true)
     setCreateError(null)
@@ -53,6 +65,11 @@ export default function AdminProjectsClient() {
       if (data.solution.length > 0) fd.append("solution", data.solution.join("\n"))
       if (data.impact.length > 0) fd.append("impact", data.impact.join("\n"))
       if (data.image) fd.append("image", data.image)
+      if (data.pdf) fd.append("pdf", data.pdf)
+      if (data.removePdf) fd.append("removePdf", "true")
+      if (data.githubUrl) fd.append("githubUrl", data.githubUrl)
+      if (data.liveUrl) fd.append("liveUrl", data.liveUrl)
+      fd.append("displayOrder", String(data.displayOrder || 0))
 
       const res = await fetch("/api/admin/projects-aws", { method: "POST", body: fd })
       const resData = await res.json()
@@ -125,7 +142,7 @@ export default function AdminProjectsClient() {
             </div>
             <h2 className="text-2xl font-extrabold text-slate-900">Add New Project</h2>
           </div>
-          <ProjectFormModern onSubmit={onCreate} loading={creating} error={createError} />
+          <ProjectFormModern onSubmit={onCreate} loading={creating} error={createError} existingProjects={projects} />
         </div>
 
         <div className="my-12 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
@@ -262,8 +279,32 @@ function ProjectCard({ project, onEdit, onChanged }: { project: Project; onEdit:
         </div>
       )}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-slate-900 mb-1 line-clamp-2">{project.title}</h3>
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="text-xl font-bold text-slate-900 line-clamp-2 flex-1">{project.title}</h3>
+          {project.displayOrder !== undefined && (
+            <span className="px-2 py-1 rounded-md bg-blue-100 text-blue-800 text-xs font-semibold whitespace-nowrap">
+              Order: {project.displayOrder}
+            </span>
+          )}
+        </div>
         <p className="text-sm text-slate-600 mb-4">{project.meta}</p>
+
+        {/* PDF Indicator */}
+        {project.pdfUrl && (
+          <div className="mb-3">
+            <a
+              href={project.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-red-100 text-red-800 text-xs font-semibold hover:bg-red-200 transition-colors"
+            >
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6z" clipRule="evenodd" />
+              </svg>
+              PDF Attached
+            </a>
+          </div>
+        )}
 
         {project.stack.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
@@ -326,6 +367,11 @@ function EditProjectModal({ project, onClose, onSaved }: { project: Project; onC
     solution: string[]
     impact: string[]
     image?: File
+    pdf?: File
+    removePdf?: boolean
+    githubUrl?: string
+    liveUrl?: string
+    displayOrder?: number
   }) {
     setSaving(true)
     setError(null)
@@ -341,6 +387,11 @@ function EditProjectModal({ project, onClose, onSaved }: { project: Project; onC
       if (data.solution.length > 0) fd.append("solution", data.solution.join("\n"))
       if (data.impact.length > 0) fd.append("impact", data.impact.join("\n"))
       if (data.image) fd.append("image", data.image)
+      if (data.pdf) fd.append("pdf", data.pdf)
+      if (data.removePdf) fd.append("removePdf", "true")
+      if (data.githubUrl) fd.append("githubUrl", data.githubUrl)
+      if (data.liveUrl) fd.append("liveUrl", data.liveUrl)
+      if (data.displayOrder !== undefined) fd.append("displayOrder", String(data.displayOrder))
 
       const res = await fetch("/api/admin/projects-aws", { method: "PUT", body: fd })
       const resData = await res.json()
@@ -384,8 +435,14 @@ function EditProjectModal({ project, onClose, onSaved }: { project: Project; onC
               challenge: project.challenge,
               solution: project.solution,
               impact: project.impact,
+              pdfUrl: project.pdfUrl,
+              githubUrl: project.githubUrl,
+              liveUrl: project.liveUrl,
+              displayOrder: project.displayOrder,
             }}
             submitText="Save Changes"
+            existingProjects={projects}
+            currentProjectId={project.id}
           />
         </div>
       </div>

@@ -12,13 +12,7 @@ type Profile = {
   id: number
   name: string
   title: string
-  email: string
-  phone: string
-  location: string
   bio: string | null
-  linkedin_url: string | null
-  github_url: string | null
-  twitter_url: string | null
   profile_image_url: string | null
   resume_url: string | null
   updated_at: string
@@ -44,13 +38,7 @@ export default function AdminProfileClient() {
     const data = {
       name: formData.get("name"),
       title: formData.get("title"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      location: formData.get("location"),
       bio: formData.get("bio"),
-      linkedin_url: formData.get("linkedin_url"),
-      github_url: formData.get("github_url"),
-      twitter_url: formData.get("twitter_url"),
       profile_image_url: formData.get("profile_image_url"),
       resume_url: formData.get("resume_url"),
     }
@@ -213,48 +201,6 @@ export default function AdminProfileClient() {
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-bold text-slate-900">
-                      Email *
-                    </Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      defaultValue={profile.email}
-                      required
-                      readOnly={!isEditing}
-                      className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-sm font-bold text-slate-900">
-                      Phone
-                    </Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      defaultValue={profile.phone || ""}
-                      readOnly={!isEditing}
-                      className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-2 md:col-span-2">
-                    <Label htmlFor="location" className="text-sm font-bold text-slate-900">
-                      Location
-                    </Label>
-                    <Input
-                      id="location"
-                      name="location"
-                      defaultValue={profile.location || ""}
-                      readOnly={!isEditing}
-                      className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-                    />
-                  </div>
-
                   <div className="space-y-2 md:col-span-2">
                     <Label htmlFor="bio" className="text-sm font-bold text-slate-900">
                       Bio / About
@@ -271,66 +217,41 @@ export default function AdminProfileClient() {
                 </div>
               </div>
 
-              {/* Social Media Links */}
-              <div className="bg-white rounded-3xl border-2 border-slate-200 shadow-2xl p-8 mb-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+              {/* Contact Info Notice */}
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl border-2 border-amber-300 shadow-lg p-8 mb-8">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg flex-shrink-0">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
                   </div>
-                  <h2 className="text-2xl font-extrabold text-slate-900">Social Media Links</h2>
-                </div>
-
-                <div className="grid gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="linkedin_url" className="text-sm font-bold text-slate-900">
-                      LinkedIn URL
-                    </Label>
-                    <Input
-                      id="linkedin_url"
-                      name="linkedin_url"
-                      type="url"
-                      defaultValue={profile.linkedin_url || ""}
-                      placeholder="https://linkedin.com/in/yourprofile"
-                      readOnly={!isEditing}
-                      className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="github_url" className="text-sm font-bold text-slate-900">
-                      GitHub URL
-                    </Label>
-                    <Input
-                      id="github_url"
-                      name="github_url"
-                      type="url"
-                      defaultValue={profile.github_url || ""}
-                      placeholder="https://github.com/yourprofile"
-                      readOnly={!isEditing}
-                      className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="twitter_url" className="text-sm font-bold text-slate-900">
-                      Twitter URL
-                    </Label>
-                    <Input
-                      id="twitter_url"
-                      name="twitter_url"
-                      type="url"
-                      defaultValue={profile.twitter_url || ""}
-                      placeholder="https://twitter.com/yourprofile"
-                      readOnly={!isEditing}
-                      className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-                    />
+                  <div>
+                    <h2 className="text-2xl font-extrabold text-slate-900 mb-2">Contact Info & Social Links</h2>
+                    <p className="text-slate-700 text-base leading-relaxed mb-4">
+                      All contact information and social media links are now managed in one central location for consistency across your entire portfolio.
+                    </p>
+                    <a
+                      href="/admin/contact"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                      Edit Contact & Social Links
+                    </a>
+                    <p className="text-sm text-slate-600 mt-3">
+                      This includes: Email, Phone, LinkedIn, GitHub, Twitter, Location, and Footer
+                    </p>
                   </div>
                 </div>
               </div>

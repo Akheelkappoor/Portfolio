@@ -47,7 +47,10 @@
       "Bash(pm2 flush:*)",
       "Bash(unset:*)",
       "Bash(export S3_PUBLIC_BASE_URL:*)",
-      "Bash(echo:*)"
+      "Bash(echo:*)",
+      "Bash(sudo ls:*)",
+      "Bash(sudo systemctl:*)",
+      "Bash(timeout 10 curl:*)"
     ],
     "deny": [],
     "ask": []

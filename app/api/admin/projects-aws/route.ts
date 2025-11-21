@@ -19,12 +19,14 @@ export async function GET() {
              COALESCE(solution,'[]') AS solution,
              COALESCE(impact,'[]') AS impact,
              image_url AS "imageUrl",
+             pdf_url AS "pdfUrl",
              github_url AS "githubUrl",
              live_url AS "liveUrl",
+             display_order AS "displayOrder",
              created_at AS "createdAt",
              updated_at AS "updatedAt"
       FROM projects
-      ORDER BY created_at DESC
+      ORDER BY display_order ASC, created_at DESC
     `)
     return NextResponse.json(rows, { status: 200 })
   } catch (err: any) {
@@ -47,13 +49,18 @@ export async function POST(req: Request) {
       impact: string[] = []
     let githubUrl = "",
       liveUrl = "",
-      imageUrl: string | null = null
+      imageUrl: string | null = null,
+      pdfUrl: string | null = null
+    let displayOrder = 0
 
     if (ct.includes("multipart/form-data")) {
-      const form = await req.formData().catch((err) => {
+      let form: FormData
+      try {
+        form = await req.formData()
+      } catch (err: any) {
         console.error("[v0] FormData parse error:", err.message)
-        throw new Error("Failed to parse body as FormData.")
-      })
+        return NextResponse.json({ error: "Failed to parse form data" }, { status: 400 })
+      }
       title = String(form.get("title") || "")
       meta = String(form.get("meta") || "")
       badge = String(form.get("badge") || "")
@@ -79,8 +86,11 @@ export async function POST(req: Request) {
         .filter(Boolean)
       githubUrl = String(form.get("githubUrl") || "")
       liveUrl = String(form.get("liveUrl") || "")
+      displayOrder = parseInt(String(form.get("displayOrder") || "0"), 10)
+
+      // Handle image upload
       const file = form.get("image") as File | null
-      if (file) {
+      if (file && file.size > 0) {
         const buf = new Uint8Array(await file.arrayBuffer())
         const ext = file.name.split(".").pop() || "png"
         const key = `projects/${crypto.randomUUID()}.${ext}`
@@ -91,6 +101,21 @@ export async function POST(req: Request) {
           contentType: file.type || "application/octet-stream",
         })
         imageUrl = publicS3Url(key)
+      }
+
+      // Handle PDF upload
+      const pdfFile = form.get("pdf") as File | null
+      if (pdfFile && pdfFile.size > 0) {
+        const buf = new Uint8Array(await pdfFile.arrayBuffer())
+        const ext = pdfFile.name.split(".").pop() || "pdf"
+        const key = `projects/pdfs/${crypto.randomUUID()}.${ext}`
+        await uploadToS3({
+          bucket: process.env.S3_BUCKET!,
+          key,
+          body: buf,
+          contentType: pdfFile.type || "application/pdf",
+        })
+        pdfUrl = publicS3Url(key)
       }
     } else {
       const body = await req.json()
@@ -105,13 +130,15 @@ export async function POST(req: Request) {
       githubUrl = body.githubUrl || ""
       liveUrl = body.liveUrl || ""
       imageUrl = body.imageUrl || null
+      pdfUrl = body.pdfUrl || null
+      displayOrder = body.displayOrder || 0
     }
 
     const id = crypto.randomUUID()
     const now = new Date()
     await query(
-      `INSERT INTO projects (id, title, meta, badge, stack, category, challenge, solution, impact, image_url, github_url, live_url, created_at, updated_at)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
+      `INSERT INTO projects (id, title, meta, badge, stack, category, challenge, solution, impact, image_url, pdf_url, github_url, live_url, display_order, created_at, updated_at)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)`,
       [
         id,
         title,
@@ -123,8 +150,10 @@ export async function POST(req: Request) {
         JSON.stringify(solution),
         JSON.stringify(impact),
         imageUrl,
+        pdfUrl,
         githubUrl,
         liveUrl,
+        displayOrder,
         now,
         now,
       ],
@@ -152,6 +181,8 @@ export async function PUT(req: Request) {
     let githubUrl: string | undefined = undefined
     let liveUrl: string | undefined = undefined
     let imageUrl: string | null | undefined = undefined
+    let pdfUrl: string | null | undefined = undefined
+    let displayOrder: number | undefined = undefined
 
     if (ct.includes("multipart/form-data")) {
       const form = await req.formData()
@@ -181,8 +212,13 @@ export async function PUT(req: Request) {
         .filter(Boolean)
       githubUrl = String(form.get("githubUrl") || "")
       liveUrl = String(form.get("liveUrl") || "")
+      if (form.has("displayOrder")) {
+        displayOrder = parseInt(String(form.get("displayOrder") || "0"), 10)
+      }
+
+      // Handle image upload
       const file = form.get("image") as File | null
-      if (file) {
+      if (file && file.size > 0) {
         const buf = new Uint8Array(await file.arrayBuffer())
         const ext = file.name.split(".").pop() || "png"
         const key = `projects/${crypto.randomUUID()}.${ext}`
@@ -195,6 +231,30 @@ export async function PUT(req: Request) {
         imageUrl = publicS3Url(key)
       } else {
         imageUrl = undefined
+      }
+
+      // Handle PDF upload/removal
+      const shouldRemovePdf = form.get("removePdf") === "true"
+      const pdfFile = form.get("pdf") as File | null
+
+      if (shouldRemovePdf && (!pdfFile || pdfFile.size === 0)) {
+        // Remove PDF: no new file uploaded and removal requested
+        pdfUrl = null
+      } else if (pdfFile && pdfFile.size > 0) {
+        // Upload new PDF (replaces old one if exists)
+        const buf = new Uint8Array(await pdfFile.arrayBuffer())
+        const ext = pdfFile.name.split(".").pop() || "pdf"
+        const key = `projects/pdfs/${crypto.randomUUID()}.${ext}`
+        await uploadToS3({
+          bucket: process.env.S3_BUCKET!,
+          key,
+          body: buf,
+          contentType: pdfFile.type || "application/pdf",
+        })
+        pdfUrl = publicS3Url(key)
+      } else {
+        // No change to PDF
+        pdfUrl = undefined
       }
     } else {
       const body = await req.json()
@@ -210,6 +270,8 @@ export async function PUT(req: Request) {
       if ("githubUrl" in body) githubUrl = body.githubUrl || ""
       if ("liveUrl" in body) liveUrl = body.liveUrl || ""
       if ("imageUrl" in body) imageUrl = body.imageUrl
+      if ("pdfUrl" in body) pdfUrl = body.pdfUrl
+      if ("displayOrder" in body) displayOrder = body.displayOrder
     }
 
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 })
@@ -248,6 +310,14 @@ export async function PUT(req: Request) {
     if (imageUrl !== undefined) {
       fields.push(`image_url = $${i++}`)
       values.push(imageUrl)
+    }
+    if (pdfUrl !== undefined) {
+      fields.push(`pdf_url = $${i++}`)
+      values.push(pdfUrl)
+    }
+    if (displayOrder !== undefined) {
+      fields.push(`display_order = $${i++}`)
+      values.push(displayOrder)
     }
     fields.push(`updated_at = $${i}`)
     values.push(new Date())

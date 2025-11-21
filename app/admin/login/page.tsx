@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,7 +12,28 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [checkingSetup, setCheckingSetup] = useState(true)
   const router = useRouter()
+
+  // Check if setup is completed
+  useEffect(() => {
+    async function checkSetup() {
+      try {
+        const res = await fetch("/api/setup")
+        const data = await res.json()
+
+        if (!data.is_completed) {
+          router.push("/setup")
+          return
+        }
+      } catch (err) {
+        console.error("Failed to check setup status:", err)
+      } finally {
+        setCheckingSetup(false)
+      }
+    }
+    checkSetup()
+  }, [])
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -33,6 +54,20 @@ export default function AdminLoginPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (checkingSetup) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50 flex items-center justify-center">
+        <div className="text-center">
+          <svg className="h-8 w-8 animate-spin text-amber-600 mx-auto mb-3" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4A4 4 0 008 12H4z" />
+          </svg>
+          <p className="text-slate-600 font-medium">Checking setup status...</p>
+        </div>
+      </main>
+    )
   }
 
   return (

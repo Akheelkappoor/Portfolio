@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react"
 import useSWR from "swr"
-import { Settings, User, Globe, Palette, Search, Database } from "lucide-react"
+import { Settings, User, Globe, Palette, Search, Database, Mail } from "lucide-react"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export default function AdminSettingsClient() {
   const { data: settings, error, mutate } = useSWR("/api/admin/settings", fetcher)
+  const { data: emailSettings, mutate: mutateEmail } = useSWR("/api/admin/email-settings", fetcher)
   const [activeTab, setActiveTab] = useState("account")
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState("")
@@ -27,6 +28,16 @@ export default function AdminSettingsClient() {
     default_og_image: "",
     twitter_handle: "",
     meta_keywords: "",
+  })
+
+  const [emailFormData, setEmailFormData] = useState({
+    smtp_host: "smtp.gmail.com",
+    smtp_port: 587,
+    smtp_user: "",
+    smtp_password: "",
+    from_email: "",
+    to_email: "",
+    email_enabled: false,
   })
 
   // Update form when data loads
@@ -51,6 +62,21 @@ export default function AdminSettingsClient() {
     }
   }, [settings])
 
+  // Update email form when email settings load
+  useEffect(() => {
+    if (emailSettings) {
+      setEmailFormData({
+        smtp_host: emailSettings.smtp_host || "smtp.gmail.com",
+        smtp_port: emailSettings.smtp_port || 587,
+        smtp_user: emailSettings.smtp_user || "",
+        smtp_password: "", // Never populate password field
+        from_email: emailSettings.from_email || "",
+        to_email: emailSettings.to_email || "",
+        email_enabled: emailSettings.email_enabled || false,
+      })
+    }
+  }, [emailSettings])
+
   const handleSave = async () => {
     setSaving(true)
     setMessage("")
@@ -63,6 +89,31 @@ export default function AdminSettingsClient() {
       if (res.ok) {
         setMessage("Settings saved successfully!")
         mutate()
+        setTimeout(() => setMessage(""), 3000)
+      } else {
+        const data = await res.json()
+        setMessage(`Error: ${data.error || "Failed to save"}`)
+      }
+    } catch (err: any) {
+      setMessage(`Error: ${err.message}`)
+    }
+    setSaving(false)
+  }
+
+  const handleEmailSave = async () => {
+    setSaving(true)
+    setMessage("")
+    try {
+      const res = await fetch("/api/admin/email-settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(emailFormData),
+      })
+      if (res.ok) {
+        setMessage("Email settings saved successfully!")
+        mutateEmail()
+        // Clear password field after save
+        setEmailFormData(prev => ({ ...prev, smtp_password: "" }))
         setTimeout(() => setMessage(""), 3000)
       } else {
         const data = await res.json()
@@ -99,6 +150,7 @@ export default function AdminSettingsClient() {
 
   const tabs = [
     { id: "account", label: "Account", icon: User },
+    { id: "email", label: "Email", icon: Mail },
     { id: "site", label: "Site", icon: Globe },
     { id: "appearance", label: "Appearance", icon: Palette },
     { id: "seo", label: "SEO", icon: Search },
@@ -226,6 +278,120 @@ export default function AdminSettingsClient() {
                     placeholder="3600"
                   />
                   <p className="text-xs text-slate-500 mt-1">Default: 3600 seconds (1 hour)</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Email Settings */}
+          {activeTab === "email" && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-xl font-semibold text-white mb-4">Email Settings</h2>
+                <p className="text-slate-400 text-sm mb-6">Configure SMTP settings for contact form email notifications</p>
+              </div>
+
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-6">
+                <p className="text-blue-300 text-sm">
+                  <strong>📧 Gmail Setup:</strong> Use your Gmail address and create an App Password at{" "}
+                  <a
+                    href="https://myaccount.google.com/apppasswords"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-blue-200"
+                  >
+                    myaccount.google.com/apppasswords
+                  </a>
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="email_enabled"
+                    checked={emailFormData.email_enabled}
+                    onChange={(e) => setEmailFormData({ ...emailFormData, email_enabled: e.target.checked })}
+                    className="w-4 h-4 rounded border-slate-600 bg-slate-900/50 text-amber-500 focus:ring-2 focus:ring-amber-500"
+                  />
+                  <label htmlFor="email_enabled" className="text-slate-300 font-medium">
+                    Enable Email Notifications
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">SMTP Host</label>
+                    <input
+                      type="text"
+                      value={emailFormData.smtp_host}
+                      onChange={(e) => setEmailFormData({ ...emailFormData, smtp_host: e.target.value })}
+                      className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      placeholder="smtp.gmail.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">SMTP Port</label>
+                    <input
+                      type="number"
+                      value={emailFormData.smtp_port}
+                      onChange={(e) => setEmailFormData({ ...emailFormData, smtp_port: parseInt(e.target.value) || 587 })}
+                      className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      placeholder="587"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Gmail Address</label>
+                  <input
+                    type="email"
+                    value={emailFormData.smtp_user}
+                    onChange={(e) => setEmailFormData({ ...emailFormData, smtp_user: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="your@gmail.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Gmail App Password
+                    {emailSettings?.has_password && (
+                      <span className="ml-2 text-xs text-green-400">(Password saved)</span>
+                    )}
+                  </label>
+                  <input
+                    type="password"
+                    value={emailFormData.smtp_password}
+                    onChange={(e) => setEmailFormData({ ...emailFormData, smtp_password: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="Enter new password to update"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Leave empty to keep existing password</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">From Email</label>
+                  <input
+                    type="email"
+                    value={emailFormData.from_email}
+                    onChange={(e) => setEmailFormData({ ...emailFormData, from_email: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="your@gmail.com (usually same as Gmail address)"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Send To Email</label>
+                  <input
+                    type="email"
+                    value={emailFormData.to_email}
+                    onChange={(e) => setEmailFormData({ ...emailFormData, to_email: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="where@to-receive-messages.com"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Where contact form messages will be sent</p>
                 </div>
               </div>
             </div>
@@ -459,7 +625,7 @@ export default function AdminSettingsClient() {
           {activeTab !== "backup" && (
             <div className="pt-6 border-t border-slate-700">
               <button
-                onClick={handleSave}
+                onClick={activeTab === "email" ? handleEmailSave : handleSave}
                 disabled={saving}
                 className="px-6 py-3 bg-gradient-to-br from-amber-500 to-orange-600 text-white font-medium rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
               >
