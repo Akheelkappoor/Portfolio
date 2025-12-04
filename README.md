@@ -493,10 +493,10 @@ If you find this project useful, please consider starring it on GitHub!
 ## 📬 Contact
 
 **Project Maintainer:** Your Name
-- **Email:** your.email@example.com
-- **LinkedIn:** [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)
-- **GitHub:** [@yourusername](https://github.com/yourusername)
-- **Portfolio:** [yourportfolio.com](https://yourportfolio.com)
+- **Email:** akheelkappoor@outlook.com
+- **LinkedIn:** [linkedin.com/in/akheelkappoor](https://www.linkedin.com/in/akheelkappoor/)
+- **GitHub:** [@Akheelkappoor](https://github.com/Akheelkappoor)
+- **Portfolio:** [akheelkappoor.mooo.com](https://akheelkappoor.mooo.com/)
 
 ---
 
