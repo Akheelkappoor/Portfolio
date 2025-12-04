@@ -56,7 +56,7 @@ A modern, full-stack portfolio system built with Next.js, featuring an admin das
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/Portfolio.git
+git clone https://github.com/Akheelkappoor/Portfolio.git
 cd Portfolio
 
 # Install dependencies
@@ -422,11 +422,11 @@ Open an issue or PR to add your portfolio to our showcase:
 **Need help?**
 1. Check the [documentation](./GETTING_STARTED.md)
 2. Review [troubleshooting guide](./GETTING_STARTED.md#troubleshooting)
-3. Search [existing issues](https://github.com/YOUR_USERNAME/Portfolio/issues)
-4. [Create a new issue](https://github.com/YOUR_USERNAME/Portfolio/issues/new)
+3. Search [existing issues](https://github.com/Akheelkappoor/Portfolio/issues)
+4. [Create a new issue](https://github.com/Akheelkappoor/Portfolio/issues/new)
 
 **Found a bug?**
-Please [report it](https://github.com/YOUR_USERNAME/Portfolio/issues/new) with:
+Please [report it](https://github.com/Akheelkappoor/Portfolio/issues/new) with:
 - Steps to reproduce
 - Expected behavior
 - Actual behavior
@@ -486,7 +486,7 @@ Want to contribute? See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 If you find this project useful, please consider starring it on GitHub!
 
-[![Star History Chart](https://api.star-history.com/svg?repos=YOUR_USERNAME/Portfolio&type=Date)](https://star-history.com/#YOUR_USERNAME/Portfolio&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Akheelkappoor/Portfolio&type=Date)](https://star-history.com/#Akheelkappoor/Portfolio&Date)
 
 ---
 
@@ -507,8 +507,8 @@ If you find this project useful, please consider starring it on GitHub!
 - [Setup Chatbot](./N8N_CHATBOT_SETUP.md) - AI chatbot
 - [Customize](./CUSTOMIZATION_GUIDE.md) - Personalization
 - [Contribute](./CONTRIBUTING.md) - Join the project
-- [Report Bug](https://github.com/YOUR_USERNAME/Portfolio/issues/new) - Found an issue?
-- [Request Feature](https://github.com/YOUR_USERNAME/Portfolio/issues/new) - Have an idea?
+- [Report Bug](https://github.com/Akheelkappoor/Portfolio/issues/new) - Found an issue?
+- [Request Feature](https://github.com/Akheelkappoor/Portfolio/issues/new) - Have an idea?
 
 ---
 
@@ -516,7 +516,7 @@ If you find this project useful, please consider starring it on GitHub!
 
 **Made with ❤️ by developers, for developers**
 
-[⭐ Star](https://github.com/YOUR_USERNAME/Portfolio) · [🐛 Report Bug](https://github.com/YOUR_USERNAME/Portfolio/issues) · [💡 Request Feature](https://github.com/YOUR_USERNAME/Portfolio/issues)
+[⭐ Star](https://github.com/Akheelkappoor/Portfolio) · [🐛 Report Bug](https://github.com/Akheelkappoor/Portfolio/issues) · [💡 Request Feature](https://github.com/Akheelkappoor/Portfolio/issues)
 
 **Ready to build your portfolio?** → [Get Started](./GETTING_STARTED.md)
 
