@@ -50,7 +50,18 @@
       "Bash(echo:*)",
       "Bash(sudo ls:*)",
       "Bash(sudo systemctl:*)",
-      "Bash(timeout 10 curl:*)"
+      "Bash(timeout 10 curl:*)",
+      "Bash(tree:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(rm:*)",
+      "Bash(xargs:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(du -sh:*)",
+      "Bash(sudo du:*)",
+      "Bash(sudo journalctl:*)",
+      "Bash(sudo apt list:*)",
+      "Bash(npm cache clean:*)"
     ],
     "deny": [],
     "ask": []
