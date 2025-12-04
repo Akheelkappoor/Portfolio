@@ -66,3 +66,9 @@ pids/
 # Logs
 logs/
 *.log
+
+# Claude Code (personal settings)
+.claude/
+
+# Personal configs
+ecosystem.config.js
